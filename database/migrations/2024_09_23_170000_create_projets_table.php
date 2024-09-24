@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('projets', function (Blueprint $table) {
             $table->id();
+            $table->enum('etat', ['en_cours', 'terminer', 'annuler'])->default('en_cours');
+            $table->string('type_activite');
+            $table->date('date');
+            $table->string('attentes');
+            $table->string('obstacles');
+            $table->string('solutions');
+            $table->date('date_fin')->nullable();
             $table->timestamps();
         });
     }

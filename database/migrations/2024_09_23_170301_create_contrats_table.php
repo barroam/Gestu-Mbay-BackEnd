@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('historique_projets', function (Blueprint $table) {
+        Schema::create('contrats', function (Blueprint $table) {
             $table->id();
-            $table->string('type_activite');
-            $table->date('date');
             $table->enum('etat', ['en_cours', 'terminer', 'annuler'])->default('en_cours');
-            $table->string('attentes');
-            $table->string('obstacles');
-            $table->string('solutions');
-            $table->date('date_fin')->nullable();
+            $table->date('date');
+            $table->string('objectif');
+            $table->string('mode_paiement');
+            $table->string('nature_paiement');
+            $table->integer('quantite');
+            $table->text('preavu');
+            $table->text('force_majeure');
             $table->foreignId('projet_id')->constrained();
+            $table->foreignId('ressource_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('historique_projets');
+        Schema::dropIfExists('contrats');
     }
 };

@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('avis_projets', function (Blueprint $table) {
+        Schema::create('demandes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('projet_id')->constrained();
-            $table->string('titre');
-            $table->text('description');
+            $table->enum('statut', ['en_attente', 'approuvee', 'refusee'])->default('en_attente');
+            $table->foreignId('ressource_id')->constrained();
+            $table->foreignId('controle_demande_id')->constrained(); 
+            $table->foreignId('info_demande_id')->constrained();
             $table->foreignId('user_id')->constrained();
+            $table->text('titre');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('avis_projets');
+        Schema::dropIfExists('demandes');
     }
 };

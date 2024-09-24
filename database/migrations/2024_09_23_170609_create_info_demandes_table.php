@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('info_demandes', function (Blueprint $table) {
             $table->id();
+            $table->enum('demandeur', ['individuel', 'groupe', 'association']);
+            $table->string('nom_demandeur');
+            $table->string('adresse');
+            $table->string('cin/ninea');
+            $table->integer('contact');
             $table->timestamps();
         });
     }

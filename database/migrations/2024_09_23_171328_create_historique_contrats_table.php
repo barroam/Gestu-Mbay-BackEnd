@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('historique_contrats', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->enum('etat', ['en_cours', 'terminer', 'annuler'])->default('en_cours');
+            $table->string('objectif');
+            $table->string('mode_paiement');
+            $table->string('nature_paiement');
+            $table->integer('quantite');
+            $table->text('presvu');
+            $table->text('force_majeure');
+            $table->foreignId('projet_id')->constrained(); 
+            $table->foreignId('contrat_id')->constrained();
             $table->timestamps();
         });
     }

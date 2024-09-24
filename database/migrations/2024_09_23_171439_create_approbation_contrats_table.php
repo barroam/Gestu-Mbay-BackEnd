@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('approbation_contrats', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('contrat_id')->constrained()->unique();
+            $table->boolean('approuve');
+            $table->text('description');
+            $table->foreignId('user_id')->constrained(); 
             $table->timestamps();
         });
     }

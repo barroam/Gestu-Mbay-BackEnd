@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('equipement_ressources', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('ressource_id')->constrained()->unique();
+            $table->foreignId('equipement_id')->constrained();
             $table->timestamps();
         });
     }

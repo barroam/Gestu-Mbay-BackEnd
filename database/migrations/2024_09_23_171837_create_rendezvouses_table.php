@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('rendezvouses', function (Blueprint $table) {
             $table->id();
+            $table->string('titre');
+            $table->text('description');
+            $table->dateTime('date');
             $table->timestamps();
         });
     }

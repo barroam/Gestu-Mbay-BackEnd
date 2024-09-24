@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('engrais_ressources', function (Blueprint $table) {
-            $table->id();
+            $table->id();  
+            $table->string('variete');
+            $table->integer('quantite');
+            $table->foreignId('ressource_id')->constrained()->unique();
+            $table->foreignId('engrais_id')->constrained();
+
             $table->timestamps();
         });
     }

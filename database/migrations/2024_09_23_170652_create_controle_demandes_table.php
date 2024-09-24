@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('controle_demandes', function (Blueprint $table) {
             $table->id();
+            $table->integer('numero_parcelle');
+            $table->decimal('hectare', 8, 2);
+            $table->enum('culture', ['vivriere', 'rente', 'horticole', 'industrielle', 'perenne']);
             $table->timestamps();
         });
     }

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('semence_ressources', function (Blueprint $table) {
             $table->id();
+            $table->string('variete');
+            $table->integer('quantite');
+            $table->foreignId('ressource_id')->constrained()->unique();
+            $table->foreignId('semence_id')->constrained();
             $table->timestamps();
         });
     }
