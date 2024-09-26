@@ -2,8 +2,12 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Engrais;
+use App\Models\Semence;
+use App\Models\Ressource;
+use App\Models\Equipement;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RessourceSeeder extends Seeder
 {
@@ -12,6 +16,10 @@ class RessourceSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Ressource::create(); // Créer des ressources génériques
+
+        Ressource::create();
+
+        Ressource::create();
     }
 }

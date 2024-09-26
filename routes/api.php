@@ -4,6 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EngraisController;
+use App\Http\Controllers\SemenceController;
+use App\Http\Controllers\RessourceController;
+use App\Http\Controllers\EquipementController;
 use App\Http\Controllers\RolePermissionController;
 
 Route::get('/user', function (Request $request) {
@@ -36,15 +40,19 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'profile'], function () 
 Route::group(['middleware' => ['auth:api', ]], function () {
     // Route pour afficher les utilisateurs par rôle
     Route::get('/users/role/{roleName}', [UserController::class, 'getUsersByRole']);
-
     // Route pour afficher un utilisateur par rôle et ID
     Route::get('/users/role/{role}/user/{id}', [UserController::class, 'getUserByRoleAndId']);
-
     // Route pour afficher les rôles avec des utilisateurs uniques
     Route::get('/roles/users', [UserController::class, 'getRolesWithUniqueUsers']);
-
     // Route pour supprimer un utilisateur
     Route::delete('/user/delete/{id}', [UserController::class, 'deleteUser']);
+  //Route pour la gestions des ressources
+    Route::apiResource('ressources', RessourceController::class);
+      //Route pour la gestions des semences
+    Route::apiResource('semences', SemenceController::class);
+      //Route pour la gestions des engrais
+    Route::apiResource('engrais', EngraisController::class);
+      //Route pour la gestions des equipements
+    Route::apiResource('equipements', EquipementController::class);
 });
 
-  

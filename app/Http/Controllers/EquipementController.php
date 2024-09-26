@@ -2,65 +2,75 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Equipement;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreEquipementRequest;
 use App\Http\Requests\UpdateEquipementRequest;
-use App\Models\Equipement;
 
 class EquipementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Afficher tous les équipements
     public function index()
     {
-        //
+        $equipements = Equipement::all();
+        return response()->json($equipements);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Ajouter un nouvel équipement
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        try {
+            $equipement = Equipement::create($validated);
+            return response()->json($equipement, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erreur lors de l\'ajout de l\'équipement : ' . $e->getMessage()], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreEquipementRequest $request)
+    // Afficher un équipement spécifique
+    public function show($id)
     {
-        //
+        try {
+            $equipement = Equipement::findOrFail($id);
+            return response()->json($equipement);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Équipement non trouvé : ' . $e->getMessage()], 404);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Equipement $equipement)
+    // Mettre à jour un équipement
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'nom' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        try {
+            $equipement = Equipement::findOrFail($id);
+            $equipement->update($validated);
+            return response()->json($equipement);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erreur lors de la mise à jour de l\'équipement : ' . $e->getMessage()], 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Equipement $equipement)
+    // Supprimer un équipement
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEquipementRequest $request, Equipement $equipement)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Equipement $equipement)
-    {
-        //
+        try {
+            $equipement = Equipement::findOrFail($id);
+            $equipement->delete();
+            return response()->json(['message' => 'Équipement supprimé avec succès']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erreur lors de la suppression de l\'équipement : ' . $e->getMessage()], 500);
+        }
     }
 }

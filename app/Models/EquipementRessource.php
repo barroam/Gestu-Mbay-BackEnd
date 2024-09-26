@@ -2,11 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Equipement;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EquipementRessource extends Model
 {
     use HasFactory;
     protected $guard= [];
+    public function ressource()
+    {
+        return $this->belongsTo(Ressource::class);
+    }
+
+    public function equipement()
+    {
+        return $this->belongsTo(Equipement::class);
+    }
 }
