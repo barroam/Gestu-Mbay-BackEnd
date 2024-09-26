@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('variete');
             $table->integer('quantite');
-            $table->foreignId('ressource_id')->constrained()->unique();
-            $table->foreignId('semence_id')->constrained();
+            $table->foreignId('ressource_id')->constrained()->unique()->onDelete('cascade');
+            $table->foreignId('semence_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

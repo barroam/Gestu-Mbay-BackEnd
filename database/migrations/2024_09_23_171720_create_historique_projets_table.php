@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('obstacles');
             $table->string('solutions');
             $table->date('date_fin')->nullable();
-            $table->foreignId('projet_id')->constrained();
+            $table->foreignId('projet_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

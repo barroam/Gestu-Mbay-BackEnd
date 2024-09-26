@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('demandes', function (Blueprint $table) {
             $table->id();
             $table->enum('statut', ['en_attente', 'approuvee', 'refusee'])->default('en_attente');
-            $table->foreignId('ressource_id')->constrained();
-            $table->foreignId('controle_demande_id')->constrained(); 
-            $table->foreignId('info_demande_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('ressource_id')->constrained()->onDelete('cascade');
+            $table->foreignId('controle_demande_id')->constrained()->onDelete('cascade'); 
+            $table->foreignId('info_demande_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('titre');
             $table->timestamps();
         });

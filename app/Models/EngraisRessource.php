@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class EngraisRessource extends Model
 {
     use HasFactory;
+    protected $guard= [];
+
 }

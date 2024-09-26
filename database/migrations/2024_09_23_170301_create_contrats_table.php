@@ -21,9 +21,9 @@ return new class extends Migration
             $table->integer('quantite');
             $table->text('preavu');
             $table->text('force_majeure');
-            $table->foreignId('projet_id')->constrained();
-            $table->foreignId('ressource_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('projet_id')->constrained()->onDelete('cascade');
+            $table->foreignId('ressource_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

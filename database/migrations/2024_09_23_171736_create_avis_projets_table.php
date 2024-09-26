@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('avis_projets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('projet_id')->constrained();
+            $table->foreignId('projet_id')->constrained()->onDelete('cascade');
             $table->string('titre');
             $table->text('description');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
