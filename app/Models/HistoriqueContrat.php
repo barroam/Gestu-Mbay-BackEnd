@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class HistoriqueContrat extends Model
 {
     use HasFactory;
-    protected $guard= [];
+
+    protected $guarded = [];
+
     public function contrat()
     {
         return $this->belongsTo(Contrat::class);

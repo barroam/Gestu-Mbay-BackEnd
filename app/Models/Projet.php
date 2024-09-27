@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Projet extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
     public function historiqueProjets()
     {
         return $this->hasMany(HistoriqueProjet::class);

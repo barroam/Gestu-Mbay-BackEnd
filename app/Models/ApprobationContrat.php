@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ApprobationContrat extends Model
 {
     use HasFactory;
-    protected $guard= [];
+    
+    protected $guarded = [];
 
     public function projet()
     {

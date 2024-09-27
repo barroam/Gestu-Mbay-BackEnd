@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Rendezvous extends Model
 {
     use HasFactory;
-    protected $guard= [];
+ 
+    protected $guarded = [];
+
 
     public function user()
     {

@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class HistoriqueProjet extends Model
 {
     use HasFactory;
-    protected $guard= [];
+
+    protected $guarded = [];
+
     public function projet()
     {
         return $this->belongsTo(Projet::class);

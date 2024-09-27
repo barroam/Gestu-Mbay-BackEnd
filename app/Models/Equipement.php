@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Equipement extends Model
 {
     use HasFactory;
-    protected $guard= [];
+    protected $guarded = [];
+
     public function ressources()
     {
         return $this->belongsToMany(Ressource::class, 'equipement_ressources');

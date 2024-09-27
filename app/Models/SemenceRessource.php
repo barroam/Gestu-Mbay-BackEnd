@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class SemenceRessource extends Model
 {
     use HasFactory;
-    protected $guard= [];
+
+    protected $guarded = [];
+
     public function ressource()
     {
         return $this->belongsTo(Ressource::class);

@@ -17,21 +17,31 @@ class EngraisController extends Controller
         return response()->json($engrais);
     }
 
-    // Ajouter un nouvel engrais
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nom' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+// Ajouter un nouvel engrais
+public function store(Request $request)
+{
+    // Validation des données d'entrée
+    $validated = $request->validate([
+        'nom' => 'required|string|max:255',
+        'image' => 'required|url',  // Si l'image est un lien
+    ]);
 
-        try {
-            $engrais = Engrais::create($validated);
-            return response()->json($engrais, 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erreur lors de l\'ajout de l\'engrais : ' . $e->getMessage()], 500);
-        }
+    try {
+        // Création de la nouvelle entrée d'engrais
+        $engrais = Engrais::create($validated);
+
+        return response()->json([
+            'message' => 'Engrais ajouté avec succès.',
+            'engrais' => $engrais,
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors de l\'ajout de l\'engrais.',
+            'details' => $e->getMessage(),
+        ], 500);
     }
+}
+
 
     // Afficher un engrais spécifique
     public function show($id)
@@ -45,21 +55,37 @@ class EngraisController extends Controller
     }
 
     // Mettre à jour un engrais
-    public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'nom' => 'sometimes|required|string|max:255',
-            'image' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+ // Mettre à jour un engrais existant
+public function update(Request $request, $id)
+{
+    // Validation des données d'entrée
+    $validated = $request->validate([
+        'nom' => 'sometimes|required|string|max:255',
+        'image' => 'sometimes|url',  // Si l'image est un lien
+    ]);
 
-        try {
-            $engrais = Engrais::findOrFail($id);
-            $engrais->update($validated);
-            return response()->json($engrais);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erreur lors de la mise à jour de l\'engrais : ' . $e->getMessage()], 500);
-        }
+    try {
+        // Trouver l'engrais par ID
+        $engrais = Engrais::findOrFail($id);
+
+        // Mettre à jour l'engrais avec les données validées
+        $engrais->update($validated);
+
+        return response()->json([
+            'message' => 'Engrais mis à jour avec succès.',
+            'engrais' => $engrais,
+        ]);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'Engrais non trouvé.',
+        ], 404);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors de la mise à jour de l\'engrais.',
+            'details' => $e->getMessage(),
+        ], 500);
     }
+}
 
     // Supprimer un engrais
     public function destroy($id)

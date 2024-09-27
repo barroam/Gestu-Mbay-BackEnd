@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Demande extends Model
 {
     use HasFactory;
-    protected $guard= [];
+
+    protected $guarded = [];
+
     public function Ressource () {
         return $this->hasOne(Ressource::class);
     } 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RvUser extends Model
 {
     use HasFactory;
-    protected $guard= [];
+    protected $guarded = [];
+
 
 }

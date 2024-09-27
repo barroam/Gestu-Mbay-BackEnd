@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ControleDemande extends Model
 {
     use HasFactory;
-    protected $guard= [];
+
+    protected $guarded = [];
+
     public function Demande () {
         return $this->hasOne(Demande::class);
     } 

@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class EngraisRessource extends Model
 {
     use HasFactory;
-    protected $guard= [];
+    protected $guarded = [];
+
     public function ressource()
     {
         return $this->belongsTo(Ressource::class);

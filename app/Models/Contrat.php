@@ -12,7 +12,8 @@ class Contrat extends Model
 {
     use HasFactory;
 
-    protected $guard= [];
+    protected $guarded = [];
+
 
     public function projet()
     {
