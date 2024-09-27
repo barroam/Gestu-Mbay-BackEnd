@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Ressource;
 use App\Models\Rendezvous;
+use App\Models\InfoDemande;
+use App\Models\ControleDemande;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -14,15 +16,19 @@ class Demande extends Model
 
     protected $guarded = [];
 
-    public function Ressource () {
-        return $this->hasOne(Ressource::class);
-    } 
-    public function Rendezvous()
+    public function ressource()
     {
-        return $this->hasOne(Rendezvous::class);
+        return $this->belongsTo(Ressource::class);
     }
-    public function info_demande(){
-        return $this->hasOne(InfoDemande::class);
+
+    public function controleDemande()
+    {
+        return $this->belongsTo(ControleDemande::class);
+    }
+
+    public function infoDemande()
+    {
+        return $this->belongsTo(InfoDemande::class);
     }
 
     public function user()

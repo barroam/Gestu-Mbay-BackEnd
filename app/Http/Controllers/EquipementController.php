@@ -6,6 +6,7 @@ use App\Models\Equipement;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEquipementRequest;
 use App\Http\Requests\UpdateEquipementRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EquipementController extends Controller
 {

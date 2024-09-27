@@ -4,11 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\EngraisController;
 use App\Http\Controllers\SemenceController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\EquipementController;
+use App\Http\Controllers\InfoDemandeController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\ControleDemandeController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -54,5 +57,16 @@ Route::group(['middleware' => ['auth:api', ]], function () {
     Route::apiResource('engrais', EngraisController::class);
       //Route pour la gestions des equipements
     Route::apiResource('equipements', EquipementController::class);
+      //Route pour la gestions desw controles d'éligibilté de la demande
+    Route::apiResource('controle-demandes', ControleDemandeController::class);
+    
+    // Route pour la gestions des informations du demandeurs
+    Route::apiResource('info-demandes', InfoDemandeController::class);
+
+    //Route pour la gestion des demandes 
+    Route::apiResource('demandes', DemandeController::class);
+
+
+
 });
 

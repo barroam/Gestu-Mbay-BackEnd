@@ -2,65 +2,184 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Demande;
+use App\Models\Ressource;
+use App\Models\InfoDemande;
+use Illuminate\Http\Request;
+use App\Models\ControleDemande;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreDemandeRequest;
 use App\Http\Requests\UpdateDemandeRequest;
-use App\Models\Demande;
 
 class DemandeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function store(Request $request)
+{
+    // Validation des données
+    try {
+        $validated = $request->validate([
+            'statut' => 'required|in:en_attente,approuvee,refusee',
+            'ressource_id' => 'required|exists:ressources,id',
+            'controle_demande_id' => 'required|exists:controle_demandes,id',
+            'info_demande_id' => 'required|exists:info_demandes,id',
+            'user_id' => 'required|exists:users,id',
+            'titre' => 'required|string|max:255',
+        ]);
+        
+        // Log des données validées
+        Log::info('Données validées pour la création de la demande : ', $validated);
+        
+        // Créer la demande
+        $demande = Demande::create($validated);
+        
+        // Vérifiez si la demande a bien été créée
+        if (!$demande) {
+            throw new \Exception("La demande n'a pas pu être créée.");
+        }
+        
+        return response()->json([
+            'message' => 'Demande créée avec succès.',
+            'data' => $demande
+        ], 201);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'error' => 'Erreur de validation.',
+            'details' => $e->errors() // Détails des erreurs de validation
+        ], 422);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors de la création de la demande.',
+            'details' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+    // Récupération de toutes les demandes
     public function index()
     {
-        //
+        $demandes = Demande::with(['ressource', 'controleDemande', 'infoDemande', 'user'])->get();
+        return response()->json($demandes, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Récupération d'une demande par ID
+    public function show($id)
     {
-        //
+        try {
+            $demande = Demande::with(['ressource', 'controleDemande', 'infoDemande', 'user'])->findOrFail($id);
+            return response()->json($demande, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Demande non trouvée.',
+                'details' => $e->getMessage()
+            ], 404);
+        }
+    }
+/*
+    public function update(Request $request, $id)
+{
+    // Validation des données
+    $validated = $request->validate([
+        'statut' => 'required|in:en_attente,approuvee,refusee',
+        'ressource_id' => 'required|exists:ressources,id',
+        'controle_demande_id' => 'required|exists:controle_demandes,id',
+        'info_demande_id' => 'required|exists:info_demandes,id',
+        'user_id' => 'required|exists:users,id',
+        'titre' => 'required|string|max:255',
+    ]);
+
+    try {
+        $demande = Demande::findOrFail($id);
+        $demande->update($validated);
+
+        return response()->json([
+            'message' => 'Demande mise à jour avec succès.',
+            'data' => $demande
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors de la mise à jour de la demande.',
+            'details' => $e->getMessage()
+        ], 500);
+    }
+}  */
+public function update(Request $request, Demande $demande)
+{
+    // Validation des données
+    $validated = $request->validate([
+        'statut' => 'required|in:en_attente,approuvee,refusee',
+        'ressource_id' => 'required|exists:ressources,id',
+        'controle_demande_id' => 'required|exists:controle_demandes,id',
+        'info_demande_id' => 'required|exists:info_demandes,id',
+        'user_id' => 'required|exists:users,id',
+        'titre' => 'required|string|max:255',
+    ]);
+
+    // Vérifiez si les IDs existent dans la base de données
+    $ressourceExists = Ressource::find($request->ressource_id);
+    if (!$ressourceExists) {
+        return response()->json([
+            'error' => 'Ressource ID non valide.',
+            'details' => 'La ressource spécifiée n\'existe pas.',
+        ], 400);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreDemandeRequest $request)
-    {
-        //
+    $controleDemandeExists = ControleDemande::find($request->controle_demande_id);
+    if (!$controleDemandeExists) {
+        return response()->json([
+            'error' => 'Contrôle de demande ID non valide.',
+            'details' => 'Le contrôle de demande spécifié n\'existe pas.',
+        ], 400);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Demande $demande)
-    {
-        //
+    $infoDemandeExists = InfoDemande::find($request->info_demande_id);
+    if (!$infoDemandeExists) {
+        return response()->json([
+            'error' => 'Info demande ID non valide.',
+            'details' => 'L\'information de demande spécifiée n\'existe pas.',
+        ], 400);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Demande $demande)
-    {
-        //
+    $userExists = User::find($request->user_id);
+    if (!$userExists) {
+        return response()->json([
+            'error' => 'User ID non valide.',
+            'details' => 'L\'utilisateur spécifié n\'existe pas.',
+        ], 400);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDemandeRequest $request, Demande $demande)
-    {
-        //
-    }
+    try {
+        // Mettez à jour la demande
+        $demande->update($validated);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Demande $demande)
-    {
-        //
+        return response()->json([
+            'message' => 'Demande mise à jour avec succès.',
+            'data' => $demande
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors de la mise à jour de la demande.',
+            'details' => $e->getMessage()
+        ], 500);
     }
+}
+
+
+public function destroy($id)
+{
+    try {
+        $demande = Demande::findOrFail($id);
+        $demande->delete();
+
+        return response()->json([
+            'message' => 'Demande supprimée avec succès.'
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors de la suppression de la demande.',
+            'details' => $e->getMessage()
+        ], 500);
+    }
+}
 }

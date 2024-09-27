@@ -2,65 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreControleDemandeRequest;
-use App\Http\Requests\UpdateControleDemandeRequest;
+use Illuminate\Http\Request;
 use App\Models\ControleDemande;
 
 class ControleDemandeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function store(Request $request)
+    {
+        // Validation des données
+        $validated = $request->validate([
+            'numero_parcelle' => 'required|integer',
+            'hectare' => 'required|numeric|between:0,9999.99',
+            'culture' => 'required|in:vivriere,rente,horticole,industrielle,perenne',
+        ]);
+
+        try {
+            $controleDemande = ControleDemande::create($validated);
+            return response()->json([
+                'message' => 'Demande créée avec succès.',
+                'data' => $controleDemande
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erreur lors de la création de la demande.',
+                'details' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Récupération de toutes les demandes
     public function index()
     {
-        //
+        $demandes = ControleDemande::all();
+        return response()->json($demandes, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Récupération d'une demande par ID
+    public function show($id)
     {
-        //
+        try {
+            $controleDemande = ControleDemande::findOrFail($id);
+            return response()->json($controleDemande, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Demande non trouvée.',
+                'details' => $e->getMessage()
+            ], 404);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreControleDemandeRequest $request)
+    // Mise à jour d'une demande
+    public function update(Request $request, $id)
     {
-        //
+        // Validation des données
+        $validated = $request->validate([
+            'numero_parcelle' => 'required|integer',
+            'hectare' => 'required|numeric|between:0,9999.99',
+            'culture' => 'required|in:vivriere,rente,horticole,industrielle,perenne',
+        ]);
+
+        try {
+            $controleDemande = ControleDemande::findOrFail($id);
+            $controleDemande->update($validated);
+            return response()->json([
+                'message' => 'Demande mise à jour avec succès.',
+                'data' => $controleDemande
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erreur lors de la mise à jour de la demande.',
+                'details' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ControleDemande $controleDemande)
+    // Suppression d'une demande
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ControleDemande $controleDemande)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateControleDemandeRequest $request, ControleDemande $controleDemande)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ControleDemande $controleDemande)
-    {
-        //
-    }
+        try {
+            $controleDemande = ControleDemande::findOrFail($id);
+            $controleDemande->delete();
+            return response()->json([
+                'message' => 'Demande supprimée avec succès.'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erreur lors de la suppression de la demande.',
+                'details' => $e->getMessage()
+            ], 500);
+        }}
+        
 }
