@@ -2,65 +2,88 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AvisProjet;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreAvisProjetRequest;
 use App\Http\Requests\UpdateAvisProjetRequest;
-use App\Models\AvisProjet;
 
 class AvisProjetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'projet_id' => 'required|exists:projets,id',
+            'user_id' => 'required|exists:users,id',
+            'titre' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
+        ]);
+
+        $avis = AvisProjet::create($validated);
+
+        return response()->json([
+            'message' => 'Avis de projet créé avec succès.',
+            'data' => $avis // Retourne les données de l'avis directement
+        ], 201);
+    }
+
+    // READ (Liste)
     public function index()
     {
-        //
+        $avis = AvisProjet::with(['projet', 'user'])->get();
+        return response()->json([
+            'message' => 'Liste des avis récupérée avec succès.',
+            'data' => $avis // Retourne la liste des avis directement
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // READ (Détail)
+    public function show($id)
     {
-        //
+        $avis = AvisProjet::with(['projet', 'user'])->find($id);
+
+        if (!$avis) {
+            return response()->json(['error' => 'Avis non trouvé.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Avis récupéré avec succès.',
+            'data' => $avis // Retourne les données de l'avis directement
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreAvisProjetRequest $request)
+    // UPDATE
+    public function update(Request $request, $id)
     {
-        //
+        $avis = AvisProjet::find($id);
+
+        if (!$avis) {
+            return response()->json(['error' => 'Avis non trouvé.'], 404);
+        }
+
+        $validated = $request->validate([
+            'titre' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string|max:500',
+        ]);
+
+        $avis->update($validated);
+
+        return response()->json([
+            'message' => 'Avis mis à jour avec succès.',
+            'data' => $avis // Retourne les données mises à jour de l'avis
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(AvisProjet $avisProjet)
+    // DELETE
+    public function destroy($id)
     {
-        //
-    }
+        $avis = AvisProjet::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AvisProjet $avisProjet)
-    {
-        //
-    }
+        if (!$avis) {
+            return response()->json(['error' => 'Avis non trouvé.'], 404);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAvisProjetRequest $request, AvisProjet $avisProjet)
-    {
-        //
-    }
+        $avis->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(AvisProjet $avisProjet)
-    {
-        //
+        return response()->json(['message' => 'Avis supprimé avec succès.']);
     }
 }

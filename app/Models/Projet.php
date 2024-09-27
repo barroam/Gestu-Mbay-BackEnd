@@ -14,9 +14,22 @@ class Projet extends Model
 
     protected $guarded = [];
 
-    public function historiqueProjets()
+    public function historiques()
     {
-        return $this->hasMany(HistoriqueProjet::class);
+        return $this->hasMany(HistoriqueProjet::class, 'projet_id');
+    }
+    public function addHistorique()
+    {
+        $this->historiques()->create([
+            'type_activite' => $this->type_activite,
+            'date' => $this->date,
+            'etat' => $this->etat,
+            'attentes' => $this->attentes,
+            'obstacles' => $this->obstacles,
+            'solutions' => $this->solutions,
+            'date_fin' => $this->date_fin,
+            'projet_id' => $this->id,
+        ]);
     }
 
     public function contrats()

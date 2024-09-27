@@ -4,10 +4,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\EngraisController;
 use App\Http\Controllers\SemenceController;
 use App\Http\Controllers\RessourceController;
+use App\Http\Controllers\AvisProjetController;
 use App\Http\Controllers\EquipementController;
 use App\Http\Controllers\InfoDemandeController;
 use App\Http\Controllers\RolePermissionController;
@@ -66,6 +68,17 @@ Route::group(['middleware' => ['auth:api', ]], function () {
     //Route pour la gestion des demandes 
     Route::apiResource('demandes', DemandeController::class);
 
+    //Route pour la gestions d'un profile
+    Route::apiResource('projets', ProjetController::class);
+
+   //Route pour afficher les historiques par projet
+    Route::get('projets/{projet_id}/historiques', [ProjetController::class, 'showHistoriques']);
+    
+   // afficher les détails projets
+    Route::get('historiques/{historique_id}', [ProjetController::class, 'showHistoriqueProjet']);
+    
+    // gestions des avis d'un projet 
+    Route::apiResource('avis', AvisProjetController::class);
 
 
 });

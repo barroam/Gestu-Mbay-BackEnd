@@ -13,6 +13,6 @@ class HistoriqueProjet extends Model
 
     public function projet()
     {
-        return $this->belongsTo(Projet::class);
+        return $this->belongsTo(Projet::class, 'projet_id');
     }
 }
