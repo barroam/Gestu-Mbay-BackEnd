@@ -60,7 +60,11 @@ class User extends Authenticatable implements JWTSubject
      * @return mixed
      */
   
- 
+     public function contrats()
+     {
+         return $this->belongsToMany(Contrat::class, 'contrat_user');
+     }
+     
     public function projets()
     {
         return $this->hasOne(Projet::class);

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('equipement_ressources', function (Blueprint $table) {
-            //      //
-            $table->dropUnique(['ressource_id']); 
+        Schema::table('contrats', function (Blueprint $table) {
+            //
+             $table->renameColumn('preavu', 'presvu'); // Renommer la colonne
         });
     }
 
@@ -22,8 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('equipement_ressources', function (Blueprint $table) {
-      
+        Schema::table('contrats', function (Blueprint $table) {
+            //
+            $table->renameColumn('presvu', 'preavu');
         });
     }
 };

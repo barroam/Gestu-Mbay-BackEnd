@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Projet;
 use App\Models\HistoriqueContrat;
 use App\Models\ApprobationContrat;
@@ -13,7 +14,12 @@ class Contrat extends Model
     use HasFactory;
 
     protected $guarded = [];
-
+    
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'contrat_user');
+    }
+    
 
     public function projet()
     {

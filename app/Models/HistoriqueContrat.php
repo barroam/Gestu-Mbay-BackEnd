@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Projet;
+use App\Models\Contrat;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class HistoriqueContrat extends Model
 {
@@ -14,5 +16,9 @@ class HistoriqueContrat extends Model
     public function contrat()
     {
         return $this->belongsTo(Contrat::class);
+    }
+    public function projet()
+    {
+        return $this->belongsTo(Projet::class);
     }
 }

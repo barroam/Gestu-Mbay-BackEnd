@@ -23,7 +23,6 @@ return new class extends Migration
             $table->text('force_majeure');
             $table->foreignId('projet_id')->constrained()->onDelete('cascade');
             $table->foreignId('ressource_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

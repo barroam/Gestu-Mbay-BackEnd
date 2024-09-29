@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjetController;
+use App\Http\Controllers\ContratController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\EngraisController;
 use App\Http\Controllers\SemenceController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\EquipementController;
 use App\Http\Controllers\InfoDemandeController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\ControleDemandeController;
+use App\Http\Controllers\ApprobationContratController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -79,7 +81,14 @@ Route::group(['middleware' => ['auth:api', ]], function () {
     
     // gestions des avis d'un projet 
     Route::apiResource('avis', AvisProjetController::class);
+     // gestions des contrats 
+    Route::apiResource('contrats', ContratController::class);
 
+// Route pour récupérer l'historique d'un contrat
+Route::get('contrats/{id}/historiques', [ContratController::class, 'getHistorique']); 
+// Route spécifique pour afficher un historique par ID
+Route::get('historiques/contrat/{id}', [ContratController::class, 'showHistorique']);
 
+Route::apiResource('approbations', ApprobationContratController::class);
 });
 
