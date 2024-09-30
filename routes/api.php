@@ -67,8 +67,11 @@ Route::group(['middleware' => ['auth:api', ]], function () {
     // Route pour la gestions des informations du demandeurs
     Route::apiResource('info-demandes', InfoDemandeController::class);
 
+    Route::patch('/demandes/{demande}/status', [DemandeController::class, 'updateStatus']);
+
     //Route pour la gestion des demandes 
     Route::apiResource('demandes', DemandeController::class);
+
 
     //Route pour la gestions d'un profile
     Route::apiResource('projets', ProjetController::class);
@@ -81,14 +84,17 @@ Route::group(['middleware' => ['auth:api', ]], function () {
     
     // gestions des avis d'un projet 
     Route::apiResource('avis', AvisProjetController::class);
+
      // gestions des contrats 
     Route::apiResource('contrats', ContratController::class);
 
-// Route pour récupérer l'historique d'un contrat
-Route::get('contrats/{id}/historiques', [ContratController::class, 'getHistorique']); 
-// Route spécifique pour afficher un historique par ID
-Route::get('historiques/contrat/{id}', [ContratController::class, 'showHistorique']);
+    // Route pour récupérer l'historique d'un contrat
+    Route::get('contrats/{id}/historiques', [ContratController::class, 'getHistorique']); 
 
-Route::apiResource('approbations', ApprobationContratController::class);
+    // Route spécifique pour afficher un historique par ID
+    Route::get('historiques/contrat/{id}', [ContratController::class, 'showHistorique']);
+
+    //Route pour la gestions des apprbations 
+    Route::apiResource('approbations', ApprobationContratController::class);
 });
 

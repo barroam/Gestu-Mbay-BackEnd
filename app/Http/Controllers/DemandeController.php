@@ -76,34 +76,7 @@ class DemandeController extends Controller
             ], 404);
         }
     }
-/*
-    public function update(Request $request, $id)
-{
-    // Validation des données
-    $validated = $request->validate([
-        'statut' => 'required|in:en_attente,approuvee,refusee',
-        'ressource_id' => 'required|exists:ressources,id',
-        'controle_demande_id' => 'required|exists:controle_demandes,id',
-        'info_demande_id' => 'required|exists:info_demandes,id',
-        'user_id' => 'required|exists:users,id',
-        'titre' => 'required|string|max:255',
-    ]);
 
-    try {
-        $demande = Demande::findOrFail($id);
-        $demande->update($validated);
-
-        return response()->json([
-            'message' => 'Demande mise à jour avec succès.',
-            'data' => $demande
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => 'Erreur lors de la mise à jour de la demande.',
-            'details' => $e->getMessage()
-        ], 500);
-    }
-}  */
 public function update(Request $request, Demande $demande)
 {
     // Validation des données
@@ -165,6 +138,31 @@ public function update(Request $request, Demande $demande)
     }
 }
 
+public function updateStatus(Request $request, Demande $demande)
+{
+    // Validation des données
+    $validated = $request->validate([
+        'statut' => 'required|in:en_attente,approuvee,refusee', // Validation du champ statut
+    ]);
+
+    try {
+        // Mise à jour uniquement du statut de la demande
+        $demande->statut = $validated['statut'];
+        $demande->save(); // Enregistrement des modifications
+
+        // Retourner une réponse JSON avec un message de succès et les données mises à jour
+        return response()->json([
+            'message' => 'Statut de la demande mis à jour avec succès.',
+            'data' => $demande
+        ], 200); // Statut HTTP 200 pour succès
+    } catch (\Exception $e) {
+        // Retourner une réponse JSON avec un message d'erreur en cas d'exception
+        return response()->json([
+            'error' => 'Erreur lors de la mise à jour du statut de la demande.',
+            'details' => $e->getMessage()
+        ], 500); // Statut HTTP 500 pour erreur interne
+    }
+}
 
 public function destroy($id)
 {

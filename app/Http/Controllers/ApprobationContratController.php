@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreApprobationContratRequest;
 use App\Http\Requests\UpdateApprobationContratRequest;
 
+
 class ApprobationContratController extends Controller
 {
      // Récupérer toutes les approbations
