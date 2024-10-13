@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\User;
-
+use App\Models\Contrat;
 use Illuminate\Http\Request;
 
 
@@ -152,4 +152,15 @@ public function updateProfile(Request $request)
      ], 200);
  }
  
+ public function getUserWithContrat($id)
+ {
+     // Récupérer l'utilisateur avec son contrat
+     $user = User::with('contrats')->find($id);
+
+     if (!$user) {
+         return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+     }
+
+     return response()->json($user);
+ }
 }

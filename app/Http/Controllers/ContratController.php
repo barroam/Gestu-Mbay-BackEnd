@@ -39,7 +39,6 @@ class ContratController extends Controller
             'force_majeure' => 'required|string',
             'projet_id' => 'required|exists:projets,id',
             'ressource_id' => 'required|exists:ressources,id',
-            'user_id' => 'required|array',
             'user_id.*' => 'exists:users,id',
         ]);
 
@@ -97,7 +96,7 @@ public function update(Request $request, $id)
             'force_majeure' => 'required|string',
             'projet_id' => 'required|exists:projets,id',
             'ressource_id' => 'required|exists:ressources,id',
-            'user_id' => 'required|array',
+          
             'user_id.*' => 'exists:users,id',
         ]);
 

@@ -20,7 +20,12 @@ class ControleDemandeController extends Controller
             $controleDemande = ControleDemande::create($validated);
             return response()->json([
                 'message' => 'Demande créée avec succès.',
-                'data' => $controleDemande
+                'data' => [
+                    'id' => $controleDemande->id, // Ajout de l'ID dans la réponse
+                    'numero_parcelle' => $controleDemande->numero_parcelle,
+                    'hectare' => $controleDemande->hectare,
+                    'culture' => $controleDemande->culture,
+                ]
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -66,7 +71,12 @@ class ControleDemandeController extends Controller
             $controleDemande->update($validated);
             return response()->json([
                 'message' => 'Demande mise à jour avec succès.',
-                'data' => $controleDemande
+                'data' => [
+                    'id' => $controleDemande->id, // Ajout de l'ID dans la réponse
+                    'numero_parcelle' => $controleDemande->numero_parcelle,
+                    'hectare' => $controleDemande->hectare,
+                    'culture' => $controleDemande->culture,
+                ]
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -90,6 +100,7 @@ class ControleDemandeController extends Controller
                 'error' => 'Erreur lors de la suppression de la demande.',
                 'details' => $e->getMessage()
             ], 500);
-        }}
-        
+        }
+    }
 }
+ 

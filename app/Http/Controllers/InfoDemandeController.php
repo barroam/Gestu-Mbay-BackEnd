@@ -17,7 +17,7 @@ class InfoDemandeController extends Controller
             'demandeur' => 'required|in:individuel,groupe,association',
             'nom_demandeur' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
-            'cin/ninea' => [
+            'cin_ninea' => [
                 'required',
                 function ($attribute, $value, $fail) {
                     // Validation pour NINEA ou CNI
@@ -43,7 +43,7 @@ class InfoDemandeController extends Controller
             'demandeur' => 'required|in:individuel,groupe,association',
             'nom_demandeur' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
-            'cin/ninea' => [
+            'cin_ninea' => [
                 'required',
                 function ($attribute, $value, $fail) {
                     if (!preg_match('/^\d{12}$|^\d{14}-D\d{3}$/', $value)) {

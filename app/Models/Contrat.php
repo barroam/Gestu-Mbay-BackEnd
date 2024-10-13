@@ -8,6 +8,7 @@ use App\Models\HistoriqueContrat;
 use App\Models\ApprobationContrat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Contrat extends Model
 {
@@ -15,11 +16,11 @@ class Contrat extends Model
 
     protected $guarded = [];
     
-    public function users()
+    public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'contrat_user');
+        return $this->belongsToMany(User::class, 'contrat_user', 'contrat_id', 'user_id')
+                    ->withTimestamps();
     }
-    
 
     public function projet()
     {

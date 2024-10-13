@@ -37,14 +37,20 @@ Route::group([
 // ASSIGNER PERMISSIONM DE ROA
 Route::post('/assign-permissions-to-roa', [RolePermissionController::class, 'assignPermissionsToROA']);
 
-Route::group(['middleware' => ['auth:api'], 'prefix' => 'profile'], function () {
+Route::group(['middleware' => ['auth:api']], function () {
     // Route pour mettre à jour le profil de l'utilisateur
     Route::put('/update-profile', [UserController::class, 'updateProfile'])->name('update-profile');
+
+
+// Afficher le contrat 
+Route::get('/user/{id}/contrat', [UserController::class, 'getUserWithContrat']);
+
     // Route pour afficher les informations de l'utilisateur connecté
     Route::post('/me', [AuthController::class, 'me'])->name('me');
 });
 
 Route::group(['middleware' => ['auth:api', ]], function () {
+   Route::get('/getcontrat/{id}',[UserController::class,'getcontrat']);
     // Route pour afficher les utilisateurs par rôle
     Route::get('/users/role/{roleName}', [UserController::class, 'getUsersByRole']);
     // Route pour afficher un utilisateur par rôle et ID

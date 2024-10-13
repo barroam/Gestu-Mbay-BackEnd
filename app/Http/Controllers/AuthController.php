@@ -31,7 +31,7 @@ class AuthController extends Controller
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
             'role.required' => 'Le champ rôle est obligatoire.',
-            'role.in' => 'Le rôle doit être un des suivants : admin, agriculteur, fournisseur, ROA.',
+            'role.in' => 'Le rôle doit être un des suivants : admin, agriculteur, fournisseur, ROA',
         ]);
     
         if ($validator->fails()) {
@@ -50,6 +50,9 @@ class AuthController extends Controller
     
         // Assignation du rôle à l'utilisateur
         $user->assignRole(request()->role);
+
+
+            
         if ($user->hasRole('admin')) {
             // Récupérer toutes les permissions
             $permissions = Permission::all();

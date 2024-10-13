@@ -49,7 +49,10 @@ class RessourceController extends Controller
         $ressource->equipements()->attach($equipement['id']); // Pas de quantite ici
     }
 
-    return response()->json(['message' => 'Ressource ajoutée avec succès !']);
+    return response()->json([
+        'message' => 'Ressource ajoutée avec succès !',
+         'data' => $ressource
+    ]);
 }
 
    

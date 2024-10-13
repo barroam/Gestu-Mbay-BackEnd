@@ -15,6 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
@@ -60,9 +61,10 @@ class User extends Authenticatable implements JWTSubject
      * @return mixed
      */
   
-     public function contrats()
+     public function contrats(): BelongsToMany
      {
-         return $this->belongsToMany(Contrat::class, 'contrat_user');
+         return $this->belongsToMany(Contrat::class, 'contrat_user', 'user_id', 'contrat_id')
+                     ->withTimestamps();  // pour gérer les dates de création/mise à jour
      }
      
     public function projets()
