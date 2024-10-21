@@ -30,7 +30,7 @@ Route::group([
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api')->name('refresh');
-    
+
 });
 
 
@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::put('/update-profile', [UserController::class, 'updateProfile'])->name('update-profile');
 
 
-// Afficher le contrat 
+// Afficher le contrat
 Route::get('/user/{id}/contrat', [UserController::class, 'getUserWithContrat']);
 
     // Route pour afficher les informations de l'utilisateur connecté
@@ -69,13 +69,15 @@ Route::group(['middleware' => ['auth:api', ]], function () {
     Route::apiResource('equipements', EquipementController::class);
       //Route pour la gestions desw controles d'éligibilté de la demande
     Route::apiResource('controle-demandes', ControleDemandeController::class);
-    
+
     // Route pour la gestions des informations du demandeurs
     Route::apiResource('info-demandes', InfoDemandeController::class);
 
     Route::patch('/demandes/{demande}/status', [DemandeController::class, 'updateStatus']);
+    Route::get('demandes/user/{userId}', [DemandeController::class, 'getDemandesByUser']);
 
-    //Route pour la gestion des demandes 
+
+    //Route pour la gestion des demandes
     Route::apiResource('demandes', DemandeController::class);
 
 
@@ -84,23 +86,23 @@ Route::group(['middleware' => ['auth:api', ]], function () {
 
    //Route pour afficher les historiques par projet
     Route::get('projets/{projet_id}/historiques', [ProjetController::class, 'showHistoriques']);
-    
+
    // afficher les détails projets
     Route::get('historiques/{historique_id}', [ProjetController::class, 'showHistoriqueProjet']);
-    
-    // gestions des avis d'un projet 
+
+    // gestions des avis d'un projet
     Route::apiResource('avis', AvisProjetController::class);
 
-     // gestions des contrats 
+     // gestions des contrats
     Route::apiResource('contrats', ContratController::class);
 
     // Route pour récupérer l'historique d'un contrat
-    Route::get('contrats/{id}/historiques', [ContratController::class, 'getHistorique']); 
+    Route::get('contrats/{id}/historiques', [ContratController::class, 'getHistorique']);
 
     // Route spécifique pour afficher un historique par ID
     Route::get('historiques/contrat/{id}', [ContratController::class, 'showHistorique']);
 
-    //Route pour la gestions des apprbations 
+    //Route pour la gestions des apprbations
     Route::apiResource('approbations', ApprobationContratController::class);
 });
 

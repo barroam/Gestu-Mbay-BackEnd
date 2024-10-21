@@ -26,18 +26,18 @@ class DemandeController extends Controller
             'user_id' => 'required|exists:users,id',
             'titre' => 'required|string|max:255',
         ]);
-        
+
         // Log des données validées
         Log::info('Données validées pour la création de la demande : ', $validated);
-        
+
         // Créer la demande
         $demande = Demande::create($validated);
-        
+
         // Vérifiez si la demande a bien été créée
         if (!$demande) {
             throw new \Exception("La demande n'a pas pu être créée.");
         }
-        
+
         return response()->json([
             'message' => 'Demande créée avec succès.',
             'data' => $demande
@@ -180,4 +180,30 @@ public function destroy($id)
         ], 500);
     }
 }
+
+//demande par utilisateur
+public function getDemandesByUser($userId)
+{
+    try {
+        // Récupérer les demandes de l'utilisateur avec l'ID spécifié
+        $demandes = Demande::with(['ressource', 'controleDemande', 'infoDemande'])
+                            ->where('user_id', $userId)
+                            ->get();
+
+        // Vérifiez si des demandes existent pour cet utilisateur
+        if ($demandes->isEmpty()) {
+            return response()->json([
+                'message' => 'Aucune demande trouvée pour cet utilisateur.'
+            ], 404);
+        }
+
+        return response()->json($demandes, 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors de la récupération des demandes.',
+            'details' => $e->getMessage()
+        ], 500);
+    }
+}
+
 }
