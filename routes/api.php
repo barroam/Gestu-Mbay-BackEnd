@@ -26,19 +26,7 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
-    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api')->name('refresh');
 
-});
-
-
-// ASSIGNER PERMISSIONM DE ROA
-Route::post('/assign-permissions-to-roa', [RolePermissionController::class, 'assignPermissionsToROA']);
-
-Route::group(['middleware' => ['auth:api']], function () {
-    // Route pour mettre à jour le profil de l'utilisateur
     Route::put('/update-profile', [UserController::class, 'updateProfile'])->name('update-profile');
 
 
